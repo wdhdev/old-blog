@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- HTML Meta Tags -->
+        <title>Login | William's Blog</title>
+
+        <!-- Scripts -->
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="p-4 bg-zinc-900 text-white text-center">
+        <header class="px-3 py-2 text-gray-400 text-md text-left bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-4">
+            <span class="font-bold"><a href="/">William's Blog</a> > <a href="/auth/login">Login</a></span>
+        </header>
+
+        <main class="w-96 m-auto">
+            <form id="form" onsubmit="login()">
+                <input type="email" id="email" class="block py-2.5 w-full text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-2" placeholder="Email Address" required>
+                <input type="password" id="password" class="block py-2.5 w-full text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-6" placeholder="Password" required>
+
+                <button type="submit" id="btn" class="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5">Login</button>
+            </form>
+        </main>
+
+        <footer class="mt-8">
+            <p>&copy; 2023 <span class="font-semibold">William Harrison</span> - All Rights Reserved.</p>
+        </footer>
+    </body>
+
+    <script>
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        })
+
+        const form = document.getElementById("form");
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+        const btn = document.getElementById("btn");
+
+        async function login() {
+            event.preventDefault();
+
+            btn.setAttribute("disabled", true);
+            btn.innerHTML = "Logging in...";
+
+            fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    email: email.value.toLowerCase(),
+                    password: password.value
+                }
+            }).then(res => res.json()).then(data => {
+                form.reset();
+
+                btn.removeAttribute("disabled");
+                btn.innerHTML = "Login";
+
+                alert(data.message);
+
+                if(data.code === "LOGGED_IN" && params.redirect) {
+                    window.location = `/${params.redirect}`;
+                } else {
+                    window.location = "/dashboard";
+                }
+            })
+        }
+    </script>
+</html>
