@@ -14,6 +14,7 @@
   },
   "homepage": "https://github.com/wdhdev/blog#readme",
   "dependencies": {
+    "@sentry/node": "^7.54.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
