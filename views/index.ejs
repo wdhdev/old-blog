@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- HTML Meta Tags -->
+        <title>William's Blog</title>
+
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <!-- Scripts -->
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="p-4 bg-zinc-900 text-white text-center">
+        <header class="px-3 py-2 text-gray-400 text-md text-left bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-4">
+            <span class="font-bold"><a href="/">William's Blog</a></span>
+
+            <div class="float-right font-semibold">
+                <% if(loggedIn) { %>
+                    <a href="/account" class="text-blue-500 hover:text-blue-600">Account</a>
+                    <span class="mx-1 text-white">&bull;</span>
+                    <a href="/dashboard" class="text-blue-500 hover:text-blue-600">Dashboard</a>
+                <% } else { %>
+                    <a href="/auth/login" class="text-blue-500 hover:text-blue-600">Login</a>
+                <% } %>
+            </div>
+        </header>
+
+        <main class="w-fit m-auto">
+            <% for(let i = 0; i < posts.length; i++) { %>
+                <a href="/post/<%= posts[i]._id %>">
+                    <article class="p-4 bg-zinc-800 hover:bg-zinc-700 border border-2 border-gray-600 rounded-lg mb-4">
+                        <% if(posts[i].image) { %>
+                            <img src="<%= posts[i].image %>" class="max-h-96 max-w-96 mx-auto rounded-lg mb-2" draggable="false">
+                        <% } %>
+
+                        <h1 class="text-2xl font-bold break-all"><%= posts[i].title %></h1>
+                        <p class="break-all"><%= posts[i].description %></p>
+
+                        <p class="text-gray-400 text-sm mt-2"><i class="fa-solid fa-clock mr-1"></i><%= moment.unix(posts[i].timestamp / 1000).fromNow() %><span class="m-1.5">&bull;</span><i class="fa-solid fa-user mr-1"></i>@<%= posts[i].author %></p>
+                    </article>
+                </a>
+            <% } %>
+
+            <% if(posts.length === 0) { %>
+                <p class="italic">There are no posts yet.</p>
+            <% } %>
+        </main>
+    </body>
+</html>

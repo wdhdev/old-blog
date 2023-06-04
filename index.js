@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.engine("html", require("ejs").renderFile);
-app.set("view engine", "html");
+app.set("view engine", "ejs");
 
 app.use(session({
 	secret: "secret",

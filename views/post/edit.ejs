@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- HTML Meta Tags -->
+        <title>Edit Post | William's Blog</title>
+
+        <!-- Scripts -->
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="p-4 bg-zinc-900 text-white text-center">
+        <header class="px-3 py-2 text-gray-400 text-md text-left bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-4">
+            <span class="font-bold"><a href="/">William's Blog</a> > Posts > <a href="/post/<%= post._id %>"><%= post._id.slice(0, 8) %></a> > <a href="/post/edit/<%= post._id %>">Edit</a></span>
+        </header>
+
+        <main class="w-96 m-auto">
+            <form id="form" onsubmit="updatePost()">
+                <input type="url" id="image" class="block py-2.5 w-96 text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-2" placeholder="Image" value="<%= post.image || '' %>">
+                <input type="text" id="title" class="block py-2.5 w-96 text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-2" minlength="3" maxlength="50" placeholder="Title" value="<%= post.title %>" required>
+                <input type="text" id="description" class="block py-2.5 w-96 text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-2" minlength="10" max="100" placeholder="Description" value="<%= post.description %>" required>
+
+                <textarea id="body" class="block py-2.5 px-1 h-40 w-96 text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-6" minlength="20" max="2000" placeholder="Body" required><%= post.body %></textarea>
+
+                <button type="submit" id="btn" class="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5">Edit</button>
+            </form>
+        </main>
+
+        <footer class="mt-8">
+            <p>&copy; 2023 <span class="font-semibold">William Harrison</span> - All Rights Reserved.</p>
+        </footer>
+    </body>
+
+    <script>
+        const form = document.getElementById("form");
+        const btn = document.getElementById("btn");
+
+        const image = document.getElementById("image");
+        const title = document.getElementById("title");
+        const description = document.getElementById("description");
+        const body = document.getElementById("body");
+
+        async function updatePost() {
+            event.preventDefault();
+
+            btn.setAttribute("disabled", true);
+            btn.innerHTML = "Editing...";
+
+            fetch("/api/posts", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: "<%= post._id %>",
+                    image: image.value || null,
+                    title: title.value,
+                    description: description.value,
+                    body: body.value
+                })
+            }).then(res => res.json()).then(data => {
+                btn.removeAttribute("disabled");
+                btn.innerHTML = "Edit";
+
+                alert(data.message);
+
+                if(data.code === "POST_EDITED") window.location = "/post/<%= post._id %>";
+            })
+        }
+    </script>
+</html>
