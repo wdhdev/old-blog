@@ -1,6 +1,6 @@
 {
   "name": "blog",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "My personal custom built Node.js blog.",
   "main": "index.js",
   "repository": {
@@ -12,14 +12,13 @@
   "bugs": {
     "url": "https://github.com/wdhdev/blog/issues"
   },
-  "homepage": "https://github.com/wdhdev/blog#readme",
+  "homepage": "https://williamharrison.blog",
   "dependencies": {
     "@sentry/node": "^7.54.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "easyscriptjs": "^1.2.6",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.17.3",

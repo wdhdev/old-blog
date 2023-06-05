@@ -1,5 +1,3 @@
-const { uuid } = require("easyscriptjs");
-
 const postSchema = require("../../models/postSchema");
 
 module.exports = async (req, res) => {
@@ -90,7 +88,7 @@ module.exports = async (req, res) => {
         if(!req.body.description) return res.status(400).json({ "message": "No post description provided.", "code": "NO_POST_DESCRIPTION" });
         if(!req.body.body) return res.status(400).json({ "message": "No post body provided.", "code": "NO_POST_BODY" });
 
-        const id = uuid();
+        const id = require("crypto").randomUUID();
 
         data = new postSchema({
             _id: id,
