@@ -5,7 +5,7 @@ const postSchema = require("../models/postSchema");
 const userSchema = require("../models/userSchema");
 
 module.exports = async (req, res) => {
-    if(!await userSchema.findOne({ username: req.params.username })) return res.status(404).render("author/404", { username: req.params.username });
+    if(!await userSchema.findOne({ username: req.params.username })) return res.status(404).render("errors/404");
 
     const user = await userSchema.findOne({ username: req.params.username });
 

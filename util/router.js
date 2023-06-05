@@ -3,16 +3,37 @@ const { Router } = require("express");
 const router = Router();
 const routes = require("./routes");
 
+const rateLimit = require("express-rate-limit");
+
+const resetPasswordLimiter = rateLimit({
+	windowMs: 60 * 60, // 1 hour
+	max: 5, // 5 requests
+	standardHeaders: true,
+	legacyHeaders: false,
+    message: {
+        "message": "Too many requests, try again later.",
+        "code": "RATE_LIMITED"
+    }
+})
+
 router.get("/", async (req, res) => {
     routes.index(req, res);
 })
 
-router.get("/@:id", async (req, res) => {
-    res.redirect(`/author/${req.params.id}`);
+router.get("/account", async (req, res) => {
+    routes.account.index(req, res);
 })
 
-router.get("/account", async (req, res) => {
-    routes.account(req, res);
+router.get("/account/change-password", async (req, res) => {
+    routes.account["change-password"](req, res);
+})
+
+router.get("/account/reset-password", async (req, res) => {
+    routes.account["reset-password"](req, res);
+})
+
+router.post("/api/auth/forgot-password", async (req, res) => {
+    routes.api.auth["forgot-password"](req, res);
 })
 
 router.post("/api/auth/login", async (req, res) => {
@@ -39,6 +60,10 @@ router.patch("/api/user/password", async (req, res) => {
     routes.api.user.password(req, res);
 })
 
+router.put("/api/user/password", resetPasswordLimiter, async (req, res) => {
+    routes.api.user.password(req, res);
+})
+
 router.get("/api/users", async (req, res) => {
     routes.api.users(req, res);
 })
@@ -47,8 +72,8 @@ router.put("/api/users", async (req, res) => {
     routes.api.users(req, res);
 })
 
-router.get("/auth/change-password", async (req, res) => {
-    routes.auth["change-password"](req, res);
+router.get("/auth/forgot-password", async (req, res) => {
+    routes.auth["forgot-password"](req, res);
 })
 
 router.get("/auth/login", async (req, res) => {

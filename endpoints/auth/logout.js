@@ -1,7 +1,7 @@
 module.exports = async (req, res) => {
     if(!req.session.loggedIn) return res.status(401).redirect("/auth/login");
 
-    // Remove cookies
+    // Clear session data
     req.session.loggedIn = false;
     req.session.name = null;
     req.session.firstName = null;

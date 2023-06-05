@@ -19,18 +19,16 @@ module.exports = async (req, res) => {
     }
 
     if(req.method === "PUT") {
-        return res.status(403).json({ "message": "This endpoint is not in use." });
-
-        if(req.session.loggedIn) return res.status(421).json({ "message": "You have already logged in.", "code": "ALREADY_AUTHENTICATED" });
+        return res.status(403).json({ "message": "This endpoint is not in use.", "code": "ENDPOINT_DISABLED" });
 
         const firstName = req.headers.firstName;
         const lastName = req.headers.lastName;
-        const username = req.headers.username;
-        const email = req.headers.email;
+        const username = req.headers.username.toLowerCase();
+        const email = req.headers.email.toLowerCase();
         const password = req.headers.password;
 
         if(!firstName) return res.status(400).json({ "message": "No first name provided.", "code": "NO_FIRST_NAME" });
-        if(!lastName) return res.status(400).json({ "message": "No last name provided.", "code": "NO_LASTNAME" });
+        if(!lastName) return res.status(400).json({ "message": "No last name provided.", "code": "NO_LAST_NAME" });
         if(!username) return res.status(400).json({ "message": "No username provided.", "code": "NO_USERNAME" });
         if(!email) return res.status(400).json({ "message": "No email address provided.", "code": "NO_EMAIL" });
         if(!password) return res.status(400).json({ "message": "No password provided.", "code": "NO_PASSWORD" });

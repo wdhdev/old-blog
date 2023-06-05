@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- HTML Meta Tags -->
-        <title>Permission Denied</title>
+        <title>Error 401 - Unauthorised</title>
 
         <!-- Redirect -->
-        <meta http-equiv="refresh" content="3; url=/post/<%= id %>">
+        <meta http-equiv="refresh" content="3; url=/">
 
         <!-- Scripts -->
         <script src="https://cdn.tailwindcss.com"></script>
@@ -17,10 +17,10 @@
 
     <body class="p-4 bg-zinc-900 text-white">
         <header class="px-3 py-2 text-gray-400 text-md text-left bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-2">
-            <span class="font-bold"><a href="/">William's Blog</a> > Posts > <a href="/post/<%= id %>"><%= id.slice(0, 8) %></a> > Delete</span>
+            <span class="font-bold"><a href="/">William's Blog</a></span>
         </header>
 
-        <h2 class="font-bold text-3xl">Error 401</h2>
-        <p>You are not allowed to delete this post.</p>
+        <h1 class="font-bold text-3xl">Error 401</h1>
+        <p>You are not authorised to view this page.</p>
     </body>
 </html>

@@ -1,6 +1,6 @@
 {
   "name": "blog",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "My personal custom built Node.js blog.",
   "main": "index.js",
   "repository": {
@@ -14,6 +14,7 @@
   },
   "homepage": "https://williamharrison.blog",
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "@sentry/node": "^7.54.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
@@ -21,6 +22,7 @@
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
     "gravatar-url": "^3.1.0",
     "moment": "^2.29.4",
