@@ -16,7 +16,7 @@
     </head>
 
     <body class="p-4 m-auto bg-zinc-900 text-white">
-        <nav id="desktop-nav" class="hidden md:block px-3 py-2 text-gray-400 text-md bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-2">
+        <nav id="desktop-nav" class="hidden sm:block px-3 py-2 text-gray-400 text-md bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-2">
             <span class="font-bold"><a href="/">William's Blog</a> > Posts > <a href="http://localhost/post/<%= post._id %>"><%= post._id.slice(0, 8) %></a></span>
 
             <span class="float-right text-sm leading-6 items-center">
@@ -35,11 +35,11 @@
             <% } %>
         </nav>
 
-        <nav id="mobile-nav-1" class="block md:hidden px-3 py-2.5 text-gray-400 text-sm bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-2 text-center">
+        <nav id="mobile-nav-1" class="block sm:hidden px-3 py-2.5 text-gray-400 text-sm bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-2 text-center">
             <span class="font-bold"><a href="/">William's Blog</a> > Posts > <a href="http://localhost/post/<%= post._id %>"><%= post._id.slice(0, 8) %></a></span>
         </nav>
 
-        <nav id="mobile-nav-2" class="block md:hidden px-3 py-2.5 text-gray-400 text-sm bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-2 text-center">
+        <nav id="mobile-nav-2" class="block sm:hidden px-3 py-2.5 text-gray-400 text-sm bg-zinc-800 border border-2 border-gray-600 rounded-lg mb-2 text-center">
             <span class="hover:text-gray-500" title="Author"><a href="/author/<%= post.author %>"><i class="fa-solid fa-user mr-1"></i><span id="mobile-2-author"><%= author.firstName %></span></a></span>
             <span class="mx-1 text-white">&bull;</span>
             <span onclick="alert(`Published: <%= moment.unix(post.timestamp / 1000).format('Do MMMM YYYY, h:mma') %>`)" title="Published: <%= moment.unix(post.timestamp / 1000).format('Do MMMM YYYY, h:mma') %>" class="cursor-pointer"><i class="fa-solid fa-clock mr-1"></i><%= moment.unix(post.timestamp / 1000).fromNow() %></span>
