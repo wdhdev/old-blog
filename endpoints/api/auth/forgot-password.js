@@ -19,7 +19,8 @@ module.exports = async (req, res) => {
 
     data = new resetPasswordSchema({
         _id: token,
-        email: req.body.email.toLowerCase()
+        email: req.body.email.toLowerCase(),
+        createdAt: Date.now()
     })
 
     const resetEmail = {
