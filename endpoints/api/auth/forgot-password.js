@@ -16,12 +16,10 @@ module.exports = async (req, res) => {
     SendGrid.setApiKey(process.env.sendgrid_api_key);
 
     const token = require("crypto").randomUUID();
-    const expiry = Date.now() + (30 * 60 * 1000);
 
     data = new resetPasswordSchema({
         _id: token,
-        email: req.body.email.toLowerCase(),
-        expires: expiry
+        email: req.body.email.toLowerCase()
     })
 
     const resetEmail = {
