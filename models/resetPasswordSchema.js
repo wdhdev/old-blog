@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
     email: String,
     createdAt: {
         type: Date,
-        expires: 1800
+        expires: "30m"
     }
 })
 
