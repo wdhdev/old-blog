@@ -6,7 +6,7 @@ const schema = new mongoose.Schema({
     expireAt: {
         type: Date,
         default: new Date(),
-        expires: 1800,
+        expires: 1800
     }
 })
 
