@@ -1,4 +1,4 @@
-const postSchema = require("../../models/postSchema");
+const Post = require("../../models/Post");
 
 module.exports = async (req, res) => {
     if(req.method === "DELETE") {
@@ -6,20 +6,20 @@ module.exports = async (req, res) => {
 
         if(!req.headers.id) return res.status(400).json({ "message": "No post ID provided.", "code": "NO_POST_ID" });
 
-        if(!await postSchema.exists({ _id: req.headers.id })) return res.status(404).json({ "message": "No post exists with that ID.", "code": "POST_NOT_FOUND" });
+        if(!await Post.exists({ _id: req.headers.id })) return res.status(404).json({ "message": "No post exists with that ID.", "code": "POST_NOT_FOUND" });
 
-        const data = await postSchema.findOne({ _id: req.headers.id });
+        const data = await Post.findOne({ _id: req.headers.id });
 
         if(req.session.username !== data.author) return res.status(401).json({ "message": "You are not the author of this post.", "code": "NOT_AUTHOR" });
 
-        await postSchema.findOneAndDelete({ _id: req.headers.id });
+        await Post.findOneAndDelete({ _id: req.headers.id });
 
         res.status(200).json({ "message": "Your post has been deleted.", "code": "POST_DELETED" });
         return;
     }
 
     if(req.method === "GET") {
-        const posts = await postSchema.find();
+        const posts = await Post.find();
 
         const postData = [];
 
@@ -45,15 +45,15 @@ module.exports = async (req, res) => {
 
         if(!req.body.id) return res.status(400).json({ "message": "No post ID provided.", "code": "NO_POST_ID" });
 
-        if(!await postSchema.exists({ _id: req.body.id })) return res.status(404).json({ "message": "No post exists with that ID.", "code": "POST_NOT_FOUND" });
+        if(!await Post.exists({ _id: req.body.id })) return res.status(404).json({ "message": "No post exists with that ID.", "code": "POST_NOT_FOUND" });
 
-        const data = await postSchema.findOne({ _id: req.body.id });
+        const data = await Post.findOne({ _id: req.body.id });
 
         if(req.session.username !== data.author) return res.status(401).json({ "message": "You are not the author of this post.", "code": "NOT_AUTHOR" });
 
         const timestamp = Date.now();
 
-        await postSchema.findOneAndUpdate({ _id: req.body.id }, {
+        await Post.findOneAndUpdate({ _id: req.body.id }, {
             editedTimestamp: timestamp,
             image: req.body.image,
             title: req.body.title || data.title,
@@ -90,7 +90,7 @@ module.exports = async (req, res) => {
 
         const id = require("crypto").randomUUID();
 
-        data = new postSchema({
+        data = new Post({
             _id: id,
             timestamp: Date.now(),
             editedTimestamp: null,

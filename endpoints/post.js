@@ -1,17 +1,17 @@
 const moment = require("moment");
 
-const postSchema = require("../models/postSchema");
-const userSchema = require("../models/userSchema");
+const Post = require("../models/Post");
+const User = require("../models/User");
 
 module.exports = async (req, res) => {
-    if(!await postSchema.findOne({ _id: req.params.id })) return res.status(404).render("errors/404");
+    if(!await Post.findOne({ _id: req.params.id })) return res.status(404).render("errors/404");
 
     let username = null;
 
     if(req.session.loggedIn) username = req.session.username;
 
-    const post = await postSchema.findOne({ _id: req.params.id });
-    const author = await userSchema.findOne({ username: post.author });
+    const post = await Post.findOne({ _id: req.params.id });
+    const author = await User.findOne({ username: post.author });
 
     res.status(200).render("post", {
         author: author,

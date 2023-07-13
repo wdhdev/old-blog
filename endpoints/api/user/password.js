@@ -1,5 +1,5 @@
-const resetPasswordSchema = require("../../../models/resetPasswordSchema");
-const userSchema = require("../../../models/userSchema");
+const ResetPassword = require("../../../models/ResetPassword");
+const User = require("../../../models/User");
 
 module.exports = async (req, res) => {
     if(req.method === "PATCH") {
@@ -8,11 +8,11 @@ module.exports = async (req, res) => {
         if(!req.body.currentPassword) return res.status(400).json({ "message": "No current password provided.", "code": "NO_CURRENT_PASSWORD" });
         if(!req.body.newPassword) return res.status(400).json({ "message": "No new password provided.", "code": "NO_NEW_PASSWORD" });
 
-        userSchema.findOne({ username: req.session.username, email: req.session.email }, async function (err, user) {
+        User.findOne({ username: req.session.username, email: req.session.email }, async function (err, user) {
             if(!user.validatePassword(req.body.currentPassword)) {
                 res.status(401).json({ "message": "Incorrect current password.", "code": "INCORRECT_CURRENT_PASSWORD" });
             } else {
-                await userSchema.findOneAndUpdate({ email: req.session.email }, { password: user.generateHash(req.body.newPassword) });
+                await User.findOneAndUpdate({ email: req.session.email }, { password: user.generateHash(req.body.newPassword) });
 
                 // Clear session data
                 req.session.loggedIn = false;
@@ -35,11 +35,11 @@ module.exports = async (req, res) => {
         if(!req.body.token) return res.status(400).json({ "message": "No token provided.", "code": "NO_TOKEN" });
         if(!req.body.password) return res.status(400).json({ "message": "No password provided.", "code": "NO_PASSWORD" });
 
-        if(!await resetPasswordSchema.exists({ _id: req.body.token })) return res.status(400).json({ "message": "Invalid token was provided.", "code": "INVALID_TOKEN" });
+        if(!await ResetPassword.exists({ _id: req.body.token })) return res.status(400).json({ "message": "Invalid token was provided.", "code": "INVALID_TOKEN" });
 
-        const data = await resetPasswordSchema.findOne({ _id: req.body.token });
+        const data = await ResetPassword.findOne({ _id: req.body.token });
 
-        await userSchema.findOneAndUpdate({ email: data.email }, { password: (await userSchema.findOne({ email: data.email })).generateHash(req.body.password) });
+        await User.findOneAndUpdate({ email: data.email }, { password: (await User.findOne({ email: data.email })).generateHash(req.body.password) });
         await data.delete();
 
         res.status(200).json({ "message": "Your password has been changed.", "code": "PASSWORD_CHANGED" });

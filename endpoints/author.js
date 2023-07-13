@@ -1,13 +1,13 @@
 const gravatar = require("gravatar-url");
 const moment = require("moment");
 
-const postSchema = require("../models/postSchema");
-const userSchema = require("../models/userSchema");
+const Post = require("../models/Post");
+const User = require("../models/User");
 
 module.exports = async (req, res) => {
-    if(!await userSchema.findOne({ username: req.params.username })) return res.status(404).render("errors/404");
+    if(!await User.findOne({ username: req.params.username })) return res.status(404).render("errors/404");
 
-    const user = await userSchema.findOne({ username: req.params.username });
+    const user = await User.findOne({ username: req.params.username });
 
     res.status(200).render("author", {
         author: {
@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
             username: req.params.username,
             avatar: gravatar(user.email)
         },
-        posts: (await postSchema.find({ author: req.params.username })).reverse(),
+        posts: (await Post.find({ author: req.params.username })).reverse(),
         moment: moment
     })
 }

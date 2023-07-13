@@ -1,8 +1,8 @@
-const userSchema = require("../../models/userSchema");
+const User = require("../../models/User");
 
 module.exports = async (req, res) => {
     if(req.method === "GET") {
-        const users = await userSchema.find();
+        const users = await User.find();
 
         const userData = [];
 
@@ -33,10 +33,10 @@ module.exports = async (req, res) => {
         if(!email) return res.status(400).json({ "message": "No email address provided.", "code": "NO_EMAIL" });
         if(!password) return res.status(400).json({ "message": "No password provided.", "code": "NO_PASSWORD" });
 
-        if(await userSchema.exists({ username: username })) return res.status(400).json({ "message": "An account already exists with this username.", "code": "USERNAME_TAKEN" });
-        if(await userSchema.exists({ email: email })) return res.status(400).json({ "message": "An account already exists with this email address.", "code": "EMAIL_TAKEN" });
+        if(await User.exists({ username: username })) return res.status(400).json({ "message": "An account already exists with this username.", "code": "USERNAME_TAKEN" });
+        if(await User.exists({ email: email })) return res.status(400).json({ "message": "An account already exists with this email address.", "code": "EMAIL_TAKEN" });
 
-        data = new userSchema({
+        data = new User({
             created: Date.now(),
             firstName: firstName,
             lastName: lastName,

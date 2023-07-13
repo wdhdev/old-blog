@@ -1,10 +1,10 @@
 const moment = require("moment");
 
-const postSchema = require("../models/postSchema");
+const Post = require("../models/Post");
 
 module.exports = async (req, res) => {
     res.status(200).render("index", {
-        posts: (await postSchema.find()).reverse(),
+        posts: (await Post.find()).reverse(),
         session: {
             loggedIn: req.session.loggedIn
         },

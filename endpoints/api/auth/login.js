@@ -1,4 +1,4 @@
-const userSchema = require("../../../models/userSchema");
+const User = require("../../../models/User");
 
 module.exports = async (req, res) => {
     if(req.session.loggedIn) return res.status(421).json({ "message": "You have already logged in.", "code": "ALREADY_AUTHENTICATED" });
@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     if(!email) return res.status(400).json({ "message": "No email address provided.", "code": "NO_EMAIL" });
     if(!password) return res.status(400).json({ "message": "No password provided.", "code": "NO_PASSWORD" });
 
-    userSchema.findOne({ email: email }, function (err, user) {
+    User.findOne({ email: email }, function (err, user) {
         if(!user.validatePassword(password)) {
             res.status(401).json({ "message": "Incorrect email or password.", "code": "INCORRECT_CREDENTIALS" });
         } else {

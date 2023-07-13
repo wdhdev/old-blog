@@ -1,6 +1,6 @@
 const gravatar = require("gravatar-url");
 
-const postSchema = require("../models/postSchema");
+const Post = require("../models/Post");
 
 module.exports = async (req, res) => {
     if(!req.session.loggedIn) return res.status(401).redirect("/auth/login");
@@ -9,6 +9,6 @@ module.exports = async (req, res) => {
         avatar: gravatar(req.session.email),
         firstName: req.session.firstName,
         username: req.session.username,
-        posts: (await postSchema.find({ author: req.session.username })).reverse()
+        posts: (await Post.find({ author: req.session.username })).reverse()
     })
 }

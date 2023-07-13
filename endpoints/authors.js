@@ -1,7 +1,7 @@
-const userSchema = require("../models/userSchema");
+const User = require("../models/User");
 
 module.exports = async (req, res) => {
-    const authors = await userSchema.find();
+    const authors = await User.find();
 
     const authorData = [];
 

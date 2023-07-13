@@ -1,27 +1,27 @@
 const SendGrid = require("@sendgrid/mail");
 
-const resetPasswordSchema = require("../../../models/resetPasswordSchema");
-const userSchema = require("../../../models/userSchema");
+const ResetPassword = require("../../../models/ResetPassword");
+const User = require("../../../models/User");
 
 module.exports = async (req, res) => {
     if(req.session.loggedIn) return res.status(421).json({ "message": "You have already logged in.", "code": "ALREADY_AUTHENTICATED" });
 
     if(!req.body.email) return res.status(400).json({ "message": "No email address provided.", "code": "NO_EMAIL" });
 
-    if(!await userSchema.exists({ email: req.body.email.toLowerCase() })) return res.status(400).json({ "message": "No account matches the email address provided.", "code": "NO_ACCOUNT" });
-    if((await resetPasswordSchema.find({ email: req.body.email.toLowerCase() })).length >= 3) return res.status(429).json({ "message": "Too many requests, try again later.", "code": "RATE_LIMITED" });
+    if(!await User.exists({ email: req.body.email.toLowerCase() })) return res.status(400).json({ "message": "No account matches the email address provided.", "code": "NO_ACCOUNT" });
+    if((await ResetPassword.find({ email: req.body.email.toLowerCase() })).length >= 3) return res.status(429).json({ "message": "Too many requests, try again later.", "code": "RATE_LIMITED" });
 
-    const user = await userSchema.findOne({ email: req.body.email.toLowerCase() });
+    const user = await User.findOne({ email: req.body.email.toLowerCase() });
 
     SendGrid.setApiKey(process.env.sendgrid_api_key);
 
     const token = require("crypto").randomUUID();
 
-    data = new resetPasswordSchema({
+    new ResetPassword({
         _id: token,
         email: req.body.email.toLowerCase(),
-        createdAt: Date.now()
-    })
+        expireAt: Date()
+    }).save()
 
     const resetEmail = {
         to: req.body.email.toLowerCase(),
@@ -32,7 +32,6 @@ module.exports = async (req, res) => {
     }
 
     try {
-        await data.save();
         await SendGrid.send(resetEmail);
 
         res.status(200).json({ "message": "A password reset email has been sent.", "code": "EMAIL_SENT" });
