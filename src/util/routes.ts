@@ -1,5 +1,12 @@
-module.exports = {
-    404: require("../endpoints/404"),
+import apiUsers from "../endpoints/api/users";
+import author from "../endpoints/author";
+import authors from "../endpoints/authors";
+import dashboard from "../endpoints/dashboard";
+import Error404 from "../endpoints/404";
+import index from "../endpoints/index";
+
+export default {
+    404: Error404,
     account: {
         "change-password": require("../endpoints/account/change-password"),
         index: require("../endpoints/account"),
@@ -14,17 +21,17 @@ module.exports = {
         user: {
             password: require("../endpoints/api/user/password")
         },
-        users: require("../endpoints/api/users")
+        users: apiUsers
     },
     auth: {
         "forgot-password": require("../endpoints/auth/forgot-password"),
         login: require("../endpoints/auth/login"),
         logout: require("../endpoints/auth/logout")
     },
-    author: require("../endpoints/author"),
-    authors: require("../endpoints/authors"),
-    dashboard: require("../endpoints/dashboard"),
-    index: require("../endpoints/index"),
+    author: author,
+    authors: authors,
+    dashboard: dashboard,
+    index: index,
     post: {
         create: require("../endpoints/post/create"),
         delete: require("../endpoints/post/delete"),
