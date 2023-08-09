@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     if(!password) return res.status(400).json({ "message": "No password provided.", "code": "NO_PASSWORD" });
 
     User.findOne({ email: email }, function (err, user) {
-        if(!user.validatePassword(password)) {
+        if(!user || !user.validatePassword(password)) {
             res.status(401).json({ "message": "Incorrect email or password.", "code": "INCORRECT_CREDENTIALS" });
         } else {
             // Set cookies
