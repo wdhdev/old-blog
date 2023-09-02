@@ -1,7 +1,9 @@
-const ResetPassword = require("../../models/ResetPassword");
+import { Request, Response } from "express";
 
-module.exports = async (req, res) => {
-    if(req.session.loggedIn) return res.status(400).redirect("/auth/login?redirect=account");
+import ResetPassword from "../../models/ResetPassword";
+
+export default async (req: Request & any, res: Response) => {
+    if(req.session.loggedIn) return res.status(400).redirect("/auth/login?r=account");
     if(!req.query.token) return res.status(401).render("errors/401");
     if(!await ResetPassword.exists({ _id: req.query.token })) return res.status(401).render("errors/401");
 

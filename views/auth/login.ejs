@@ -66,8 +66,8 @@
 
                 alert(data.message);
 
-                if(data.code === "LOGGED_IN" && params.redirect) {
-                    window.location = `/${params.redirect}`;
+                if(data.code === "LOGGED_IN" && params.r) {
+                    window.location = `/${params.r}`;
                 } else {
                     window.location = "/dashboard";
                 }

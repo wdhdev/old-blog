@@ -1,9 +1,11 @@
-const moment = require("moment");
+import { Request, Response } from "express";
 
-const Post = require("../models/Post");
-const User = require("../models/User");
+import moment from "moment";
 
-module.exports = async (req, res) => {
+import Post from "../models/Post";
+import User from "../models/User";
+
+export default async (req: Request & any, res: Response) => {
     if(!await Post.findOne({ _id: req.params.id })) return res.status(404).render("errors/404");
 
     let username = null;

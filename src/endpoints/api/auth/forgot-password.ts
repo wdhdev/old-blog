@@ -1,15 +1,17 @@
-const SendGrid = require("@sendgrid/mail");
+import { Request, Response } from "express";
 
-const ResetPassword = require("../../../models/ResetPassword");
-const User = require("../../../models/User");
+import SendGrid from "@sendgrid/mail";
 
-module.exports = async (req, res) => {
-    if(req.session.loggedIn) return res.status(421).json({ "message": "You have already logged in.", "code": "ALREADY_AUTHENTICATED" });
+import ResetPassword from "../../../models/ResetPassword";
+import User from "../../../models/User";
 
-    if(!req.body.email) return res.status(400).json({ "message": "No email address provided.", "code": "NO_EMAIL" });
+export default async (req: Request & any, res: Response) => {
+    if(req.session.loggedIn) return res.status(421).json({ message: "You have already logged in.", code: "ALREADY_AUTHENTICATED" });
 
-    if(!await User.exists({ email: req.body.email.toLowerCase() })) return res.status(400).json({ "message": "No account matches the email address provided.", "code": "NO_ACCOUNT" });
-    if((await ResetPassword.find({ email: req.body.email.toLowerCase() })).length >= 3) return res.status(429).json({ "message": "Too many requests, try again later.", "code": "RATE_LIMITED" });
+    if(!req.body.email) return res.status(400).json({ message: "No email address provided.", code: "NO_EMAIL" });
+
+    if(!await User.exists({ email: req.body.email.toLowerCase() })) return res.status(400).json({ message: "No account matches the email address provided.", code: "NO_ACCOUNT" });
+    if((await ResetPassword.find({ email: req.body.email.toLowerCase() })).length >= 3) return res.status(429).json({ message: "Too many requests, try again later.", code: "RATE_LIMITED" });
 
     const user = await User.findOne({ email: req.body.email.toLowerCase() });
 
@@ -34,8 +36,8 @@ module.exports = async (req, res) => {
     try {
         await SendGrid.send(resetEmail);
 
-        res.status(200).json({ "message": "A password reset email has been sent.", "code": "EMAIL_SENT" });
+        res.status(200).json({ message: "A password reset email has been sent.", code: "EMAIL_SENT" });
     } catch {
-        res.status(500).json({ "message": "An error occurred.", "code": "SERVER_ERROR" });
+        res.status(500).json({ message: "An error occurred.", code: "SERVER_ERROR" });
     }
 }

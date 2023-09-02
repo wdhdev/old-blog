@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
     _id: String,
@@ -10,4 +10,4 @@ const schema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("password-resets", schema, "password-resets");
+export default mongoose.model("password-resets", schema, "password-resets");

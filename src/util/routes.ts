@@ -1,41 +1,55 @@
-import apiUsers from "../endpoints/api/users";
+import _delete from "../endpoints/post/delete";
+import account from "../endpoints/account";
+import apiAuthForgotPassword from "../endpoints/api/auth/forgot-password";
+import apiAuthLogin from "../endpoints/api/auth/login";
+import authForgotPassword from "../endpoints/auth/forgot-password";
+import authLogin from "../endpoints/auth/login";
 import author from "../endpoints/author";
 import authors from "../endpoints/authors";
+import changePassword from "../endpoints/account/change-password";
+import create from "../endpoints/post/create";
 import dashboard from "../endpoints/dashboard";
-import Error404 from "../endpoints/404";
+import edit from "../endpoints/post/edit";
+import error404 from "../endpoints/404";
 import index from "../endpoints/index";
+import logout from "../endpoints/auth/logout";
+import password from "../endpoints/api/user/password";
+import post from "../endpoints/post";
+import posts from "../endpoints/api/posts";
+import resetPassword from "../endpoints/account/reset-password";
+import users from "../endpoints/api/users";
 
 export default {
-    404: Error404,
+    404: error404,
     account: {
-        "change-password": require("../endpoints/account/change-password"),
-        index: require("../endpoints/account"),
-        "reset-password": require("../endpoints/account/reset-password")
+        "change-password": changePassword,
+        index: account,
+        "reset-password": resetPassword
     },
     api: {
         auth: {
-            "forgot-password": require("../endpoints/api/auth/forgot-password"),
-            login: require("../endpoints/api/auth/login")
+            "forgot-password": apiAuthForgotPassword,
+            login: apiAuthLogin
         },
-        posts: require("../endpoints/api/posts"),
+        posts: posts,
         user: {
-            password: require("../endpoints/api/user/password")
+            password: password
         },
-        users: apiUsers
+        users: users
     },
     auth: {
-        "forgot-password": require("../endpoints/auth/forgot-password"),
-        login: require("../endpoints/auth/login"),
-        logout: require("../endpoints/auth/logout")
+        "forgot-password": authForgotPassword,
+        login: authLogin,
+        logout: logout
     },
     author: author,
     authors: authors,
     dashboard: dashboard,
     index: index,
     post: {
-        create: require("../endpoints/post/create"),
-        delete: require("../endpoints/post/delete"),
-        edit: require("../endpoints/post/edit"),
-        index: require("../endpoints/post")
+        create: create,
+        delete: _delete,
+        edit: edit,
+        index: post
     }
 }

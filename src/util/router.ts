@@ -11,8 +11,8 @@ const resetPasswordLimiter = rateLimit({
 	standardHeaders: true,
 	legacyHeaders: false,
     message: {
-        "message": "Too many requests, try again later.",
-        "code": "RATE_LIMITED"
+        message: "Too many requests, try again later.",
+        code: "RATE_LIMITED"
     }
 })
 

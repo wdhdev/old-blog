@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
     _id: String,
@@ -11,4 +11,4 @@ const schema = new mongoose.Schema({
     body: String
 })
 
-module.exports = mongoose.model("posts", schema, "posts")
+export default mongoose.model("posts", schema, "posts");
