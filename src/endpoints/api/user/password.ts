@@ -43,7 +43,7 @@ export default async (req: Request & any, res: Response) => {
         const data = await ResetPassword.findOne({ _id: req.body.token });
 
         await UserModel.findOneAndUpdate({ email: data.email }, { password: UserModel.schema.methods.generateHash(req.body.password) });
-        await data.delete();
+        await data.deleteOne();
 
         res.status(200).json({ message: "Your password has been changed.", code: "PASSWORD_CHANGED" });
         return;
