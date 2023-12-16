@@ -12,19 +12,19 @@ export default async (req: Request & any, res: Response) => {
     if(!email) return res.status(400).json({ message: "No email address provided.", code: "NO_EMAIL" });
     if(!password) return res.status(400).json({ message: "No password provided.", code: "NO_PASSWORD" });
 
-    UserModel.findOne({ email: email }, function (err: Error, user: User) {
-        if(!user || !user.validatePassword(password)) {
-            res.status(401).json({ message: "Incorrect email or password.", code: "INCORRECT_CREDENTIALS" });
-        } else {
-            // Set cookies
-            req.session.loggedIn = true;
-            req.session.name = `${user.firstName} ${user.lastName}`;
-            req.session.firstName = user.firstName;
-            req.session.lastName = user.lastName;
-            req.session.username = user.username;
-            req.session.email = user.email;
+    const user = await UserModel.findOne({ email: email });
 
-            res.status(200).json({ message: "You have been logged in.", code: "LOGGED_IN" });
-        }
-    })
+    if(!user || !user.validatePassword(password)) {
+        res.status(401).json({ message: "Incorrect email or password.", code: "INCORRECT_CREDENTIALS" });
+    } else {
+        // Set cookies
+        req.session.loggedIn = true;
+        req.session.name = `${user.firstName} ${user.lastName}`;
+        req.session.firstName = user.firstName;
+        req.session.lastName = user.lastName;
+        req.session.username = user.username;
+        req.session.email = user.email;
+
+        res.status(200).json({ message: "You have been logged in.", code: "LOGGED_IN" });
+    }
 }

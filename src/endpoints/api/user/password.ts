@@ -11,23 +11,23 @@ export default async (req: Request & any, res: Response) => {
         if(!req.body.currentPassword) return res.status(400).json({ message: "No current password provided.", code: "NO_CURRENT_PASSWORD" });
         if(!req.body.newPassword) return res.status(400).json({ message: "No new password provided.", code: "NO_NEW_PASSWORD" });
 
-        UserModel.findOne({ username: req.session.username, email: req.session.email }, async function (err: Error, user: User) {
-            if(!user.validatePassword(req.body.currentPassword)) {
-                res.status(401).json({ message: "Incorrect current password.", code: "INCORRECT_CURRENT_PASSWORD" });
-            } else {
-                await UserModel.findOneAndUpdate({ email: req.session.email }, { password: user.generateHash(req.body.newPassword) });
+        const user = await UserModel.findOne({ username: req.session.username, email: req.session.email });
 
-                // Clear session data
-                req.session.loggedIn = false;
-                req.session.name = null;
-                req.session.firstName = null;
-                req.session.lastName = null;
-                req.session.username = null;
-                req.session.email = null;
+        if(!user.validatePassword(req.body.currentPassword)) {
+            res.status(401).json({ message: "Incorrect current password.", code: "INCORRECT_CURRENT_PASSWORD" });
+        } else {
+            await UserModel.findOneAndUpdate({ email: req.session.email }, { password: user.generateHash(req.body.newPassword) });
 
-                res.status(200).json({ message: "Your password has been changed.", code: "PASSWORD_CHANGED" });
-            }
-        })
+            // Clear session data
+            req.session.loggedIn = false;
+            req.session.name = null;
+            req.session.firstName = null;
+            req.session.lastName = null;
+            req.session.username = null;
+            req.session.email = null;
+
+            res.status(200).json({ message: "Your password has been changed.", code: "PASSWORD_CHANGED" });
+        }
 
         return;
     }
