@@ -14,7 +14,7 @@ export default async (req: Request & any, res: Response) => {
 
     const user = await UserModel.findOne({ email: email });
 
-    if(!user || !user.validatePassword(password)) {
+    if(!user || !bcrypt.compareSync(password, user.password)) {
         res.status(401).json({ message: "Incorrect email or password.", code: "INCORRECT_CREDENTIALS" });
     } else {
         // Set cookies
