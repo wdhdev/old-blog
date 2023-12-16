@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import User from "../../../classes/User";
 
+import bcrypt from "bcrypt";
+
 import { default as UserModel } from "../../../models/User";
 
 export default async (req: Request & any, res: Response) => {
