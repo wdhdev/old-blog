@@ -18,7 +18,7 @@ export default async (req: Request & any, res: Response) => {
         if(!bcrypt.compareSync(req.body.currentPassword, user.password)) {
             res.status(401).json({ message: "Incorrect current password.", code: "INCORRECT_CURRENT_PASSWORD" });
         } else {
-            await UserModel.findOneAndUpdate({ email: req.session.email }, { password: user.generateHash(req.body.newPassword) });
+            await UserModel.findOneAndUpdate({ email: req.session.email }, { password: bcrypt.hashSync(req.body.newPassword, bcrypt.genSaltSync(8)) });
 
             // Clear session data
             req.session.loggedIn = false;
