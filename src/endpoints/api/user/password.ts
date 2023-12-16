@@ -15,7 +15,7 @@ export default async (req: Request & any, res: Response) => {
 
         const user = await UserModel.findOne({ username: req.session.username, email: req.session.email });
 
-        if(!bcrypt.compareSync(password, user.password)) {
+        if(!bcrypt.compareSync(req.body.currentPassword, user.password)) {
             res.status(401).json({ message: "Incorrect current password.", code: "INCORRECT_CURRENT_PASSWORD" });
         } else {
             await UserModel.findOneAndUpdate({ email: req.session.email }, { password: user.generateHash(req.body.newPassword) });
