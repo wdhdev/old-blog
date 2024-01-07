@@ -33,7 +33,7 @@ app.engine("html", require("ejs").renderFile);
 app.set("view engine", "ejs");
 
 app.use(session({
-	secret: "secret",
+	secret: require("crypto").randomBytes(64).toString("hex"),
 	resave: true,
 	saveUninitialized: true
 }))
