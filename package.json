@@ -18,7 +18,7 @@
   },
   "homepage": "https://williamharrison.blog",
   "dependencies": {
-    "@sendgrid/mail": "^8.1.0",
+    "@sendgrid/mail": "^8.1.1",
     "@sentry/node": "^7.102.1",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
